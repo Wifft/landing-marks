@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MapsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('map/{uuid}', [MapsController::class, 'show']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

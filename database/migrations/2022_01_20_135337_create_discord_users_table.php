@@ -4,14 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMapsTable extends Migration
+class CreateDiscordUsersTable extends Migration
 {
-    /**
+     /**
      * Table name.
      *
      * @property string
      */
-    private static string $tableName = 'maps';
+    private static string $tableName = 'discord_users';
 
     /**
      * @inheritDoc
@@ -22,8 +22,7 @@ class CreateMapsTable extends Migration
             self::$tableName,
             function (Blueprint $table) : void {
                 $table->id();
-                $table->string('title', 255);
-                $table->string('uuid', 255)->unique();
+                $table->string('nickname', 255);
                 $table->timestamps();
             }
         );

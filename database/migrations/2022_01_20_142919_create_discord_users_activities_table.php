@@ -1,17 +1,19 @@
 <?php
 
+use App\Models\DiscordUser;
+use App\Models\Map;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMapsTable extends Migration
+class CreateDiscordUsersActivitiesTable extends Migration
 {
     /**
      * Table name.
      *
      * @property string
      */
-    private static string $tableName = 'maps';
+    private static string $tableName = 'discord_user_activities';
 
     /**
      * @inheritDoc
@@ -22,8 +24,9 @@ class CreateMapsTable extends Migration
             self::$tableName,
             function (Blueprint $table) : void {
                 $table->id();
-                $table->string('title', 255);
-                $table->string('uuid', 255)->unique();
+                $table->string('message', 255);
+                $table->foreignIdFor(DiscordUser::class);
+                $table->foreignIdFor(Map::class);
                 $table->timestamps();
             }
         );
