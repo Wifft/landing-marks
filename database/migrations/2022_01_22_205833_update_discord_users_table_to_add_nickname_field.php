@@ -4,9 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDiscordUsersTable extends Migration
+class UpdateDiscordUsersTableToAddNicknameField extends Migration
 {
-     /**
+    /**
      * Table name.
      *
      * @property string
@@ -18,12 +18,10 @@ class CreateDiscordUsersTable extends Migration
      */
     public function up() : void
     {
-        Schema::create(
+        Schema::table(
             self::$tableName,
             function (Blueprint $table) : void {
-                $table->id();
-                $table->string('discord_id', 255);
-                $table->timestamps();
+                $table->string('nickname');
             }
         );
     }
@@ -33,6 +31,11 @@ class CreateDiscordUsersTable extends Migration
      */
     public function down() : void
     {
-        Schema::dropIfExists(self::$tableName);
+        Schema::table(
+            self::$tableName,
+            function (Blueprint $table) : void {
+                $table->dropColumn('nickname');
+            }
+        );
     }
 }

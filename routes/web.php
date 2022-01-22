@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\DiscordController;
 use App\Http\Controllers\MapsController;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +18,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn () : View => view('welcome'));
 
-Route::get('map/{uuid}', [MapsController::class, 'show']);
+Route::get('map/{uuid}', [MapsController::class, 'show'])->name('map.show');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', fn () : View => view('dashboard'))
+    ->middleware(['auth'])
+    ->name('dashboard');
+
+Route::get('discord-login', fn() : RedirectResponse => Socialite::driver('discord')->redirect())
+    ->name('discord.login');
 
 require __DIR__.'/auth.php';
+
+Route::get('api/v1/discord/authCallback', [DiscordController::class, 'authCallback'])
+    ->name('discord.auth_callback');

@@ -1,12 +1,16 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Map;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Log;
+
 use Illuminate\View\View;
+
 use Throwable;
 
 /**
@@ -17,10 +21,12 @@ class MapsController extends Controller
     /**
      * @inheritDoc
      */
-    public function show(string $uuid) : ? View
+    public function show(Request $request, string $uuid) : ? View
     {
         try {
             $map = Map::with(['discordUsers', 'activities'])->where('uuid', $uuid)->firstOrFail();
+
+            session()->put('map_uuid', $uuid);
 
             return view('map.show', compact('map'));
         } catch (ModelNotFoundException) {
