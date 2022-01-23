@@ -1,4 +1,5 @@
 require('./bootstrap');
+require('./leaflet-map');
 
 import Alpine from 'alpinejs';
 

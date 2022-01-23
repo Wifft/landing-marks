@@ -22,14 +22,8 @@ Route::get('/', fn () : View => view('welcome'));
 
 Route::get('map/{uuid}', [MapsController::class, 'show'])->name('map.show');
 
-Route::get('/dashboard', fn () : View => view('dashboard'))
-    ->middleware(['auth'])
-    ->name('dashboard');
-
 Route::get('discord-login', fn() : RedirectResponse => Socialite::driver('discord')->redirect())
     ->name('discord.login');
-
-require __DIR__.'/auth.php';
 
 Route::get('api/v1/discord/authCallback', [DiscordController::class, 'authCallback'])
     ->name('discord.auth_callback');
