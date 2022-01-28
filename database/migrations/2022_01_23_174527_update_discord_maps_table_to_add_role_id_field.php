@@ -13,7 +13,6 @@ class UpdateDiscordMapsTableToAddRoleIdField extends Migration
      */
     private static string $tableName = 'maps';
 
-
     /**
      * Run the migrations.
      *

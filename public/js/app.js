@@ -3456,6 +3456,12 @@ var L = leaflet__WEBPACK_IMPORTED_MODULE_0__;
   \*************************************/
 /***/ (() => {
 
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var L = window.L;
 var center = [15, -37];
 var zoom = 4;
@@ -3464,14 +3470,6 @@ var map = L.map('map', {
 }).setView(center, zoom);
 var imageUrl = "https://media.fortniteapi.io/images/map.png";
 var imageBounds = [[-15, 0], [40.774, -70.125]];
-L.imageOverlay(imageUrl, imageBounds).addTo(map);
-map.on('drag', function () {
-  return map.panInsideBounds(imageBounds, {
-    animate: false
-  });
-});
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
 var redIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -3480,10 +3478,49 @@ var redIcon = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [41, 41]
 });
+L.imageOverlay(imageUrl, imageBounds).addTo(map);
+map.on('drag', function () {
+  return map.panInsideBounds(imageBounds, {
+    animate: false
+  });
+});
+var markers = [];
+
+var _iterator = _createForOfIteratorHelper(mapUsersData),
+    _step;
+
+try {
+  for (_iterator.s(); !(_step = _iterator.n()).done;) {
+    var userData = _step.value;
+    var markerData = JSON.parse(userData.pivot.marker_data);
+
+    if (markerData !== null) {
+      markerData.ownerNickname = userData.nickname;
+      markers.push(markerData);
+    }
+  }
+} catch (err) {
+  _iterator.e(err);
+} finally {
+  _iterator.f();
+}
+
+var drawnItems = markers.length > 0 ? L.geoJson(markers, {
+  "onEachFeature": function onEachFeature(marker, layer) {
+    layer.bindPopup(marker.ownerNickname);
+
+    switch (marker.type) {
+      case 'Point':
+        layer.setIcon(redIcon);
+        break;
+    }
+  }
+}) : new L.FeatureGroup();
+map.addLayer(drawnItems);
 var drawControl = new L.Control.Draw({
   position: 'topright',
   draw: {
-    polygon: {
+    polygon: user !== null && user.maps[0].pivot.marker_data === null ? {
       shapeOptions: {
         color: 'red'
       },
@@ -3495,29 +3532,42 @@ var drawControl = new L.Control.Draw({
       showArea: true,
       metric: false,
       repeatMode: true
-    },
-    marker: {
+    } : false,
+    marker: user !== null && user.maps[0].pivot.marker_data === null ? {
       icon: redIcon
-    },
+    } : false,
     polyline: false,
     rectangle: false,
     circle: false,
     circlemarker: false
   },
   edit: {
+    edit: false,
+    //ToDo: Hacer que solo el ADMINISTRADOR del server de turno pueda editar.
     featureGroup: drawnItems
   }
-});
-if (Object.keys(user).length > 0 && user.has_role) map.addControl(drawControl);
-map.on('draw:created', function (e) {
-  var type = e.layerType,
-      layer = e.layer;
+}); //ToDo: Add hasRole check at some point.
 
-  if (type === 'marker') {
-    layer.bindPopup('Wifft#0519');
-  }
-
+if (user !== null && Object.keys(user).length > 0 && user.maps[0].pivot.has_role) map.addControl(drawControl);
+map.on(L.Draw.Event.CREATED, function (e) {
+  var layer = e.layer;
+  layer.bindPopup(user.nickname);
   drawnItems.addLayer(layer);
+  var rawLayer = JSON.stringify(layer.toGeoJSON().geometry);
+  fetch(saveMarkUri, {
+    'method': 'PUT',
+    'mode': 'same-origin',
+    'cache': 'no-cache',
+    'credentials': 'same-origin',
+    'headers': {
+      'Content-Type': 'application/json'
+    },
+    'redirect': 'follow',
+    'referrerPolicy': 'no-referrer',
+    'body': {
+      'map_id': map
+    }
+  });
 });
 
 /***/ }),

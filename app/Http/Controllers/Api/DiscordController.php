@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\DiscordUser;
 use App\Models\Map;
+use App\Models\UsersMap;
 use Laravel\Socialite\Facades\Socialite;
 
 final class DiscordController extends Controller
@@ -24,22 +25,31 @@ final class DiscordController extends Controller
         $discordSocialiteInstance = Socialite::driver('discord')->stateless();
 
         $userData = $discordSocialiteInstance->user();
-        $mapData = Map::with(['discordUsers'])->where('uuid', $sessionData['uuid'])->first();
+        $mapData = Map::with(['discordUsers'])->where('uuid', $sessionData['map_uuid'])->first();
 
-        $discordClient = new DiscordClient($userData->token);
+        //$discordClient = new DiscordClient($userData->token);
 
         $user = DiscordUser::updateOrCreate(
             ['discord_id' => $userData->id],
             [
                 'nickname' => $userData->nickname,
                 'token' => $userData->token,
-                'avatar' => $userData->avatar,
-                'has_role' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->role_id)
+                'avatar' => $userData->avatar
+            ]
+        );
+
+        UsersMap::updateOrCreate(
+            [
+                'map_id' => $mapData->id,
+                'discord_user_id' => $user->id
+            ],
+            [
+                //'has_role' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->role_id)
             ]
         );
 
         session()->put('user_id', $user->id);
 
-        return redirect()->route('map.show', ['uuid' => $sessionData['uuid']]);
+        return redirect()->route('map.show', ['uuid' => $sessionData['map_uuid']]);
     }
 }

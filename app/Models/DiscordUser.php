@@ -18,16 +18,14 @@ class DiscordUser extends Model
         'discord_id',
         'nickname',
         'token',
-        'avatar',
-        'has_role'
+        'avatar'
     ];
 
     /**
      * @inheritDoc
      */
     protected $casts = [
-        'discord_id' => 'int',
-        'has_role' => 'boolean'
+        'discord_id' => 'int'
     ];
 
     /**
@@ -37,6 +35,6 @@ class DiscordUser extends Model
      */
     public function maps() : BelongsToMany
     {
-        return $this->belongsToMany(Map::class, 'discord_user_maps')->withPivot(['marker_data']);
+        return $this->belongsToMany(Map::class, (new UsersMap)->table)->withPivot(['marker_data', 'has_role']);
     }
 }

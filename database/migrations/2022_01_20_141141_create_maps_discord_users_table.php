@@ -23,11 +23,11 @@ class CreateMapsDiscordUsersTable extends Migration
         Schema::create(
             self::$tableName,
             function (Blueprint $table) : void {
-                $table->id();
                 $table->foreignIdFor(DiscordUser::class);
                 $table->foreignIdFor(Map::class);
-                $table->json('marker_data');
-                $table->timestamps();
+                $table->primary(['discord_user_id', 'map_id']);
+
+                $table->json('marker_data')->nullable();
             }
         );
     }

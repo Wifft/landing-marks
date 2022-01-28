@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\DiscordController;
+use App\Http\Controllers\Api\MapController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,4 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', fn (Request $request) : User => $request->user());
+Route::prefix('v1')->group(
+    static function () : void {
+        Route::prefix('maps')->group(
+            static function () : void {
+                Route::put('storeUserMark', [MapController::class, 'storeUserMark'])->name('api.maps.storeUserMark');
+                Route::put('deleteUserMark', [MapController::class, 'deleteUserMark'])->name('api.maps.deleteUserMark');
+            }
+        );
+    }
+);
