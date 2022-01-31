@@ -1,14 +1,16 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\Http\Clients\DiscordClient;
 use Illuminate\Http\RedirectResponse;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
+
+use Illuminate\Support\Facades\Cookie;
 
 use App\Models\DiscordUser;
 use App\Models\Map;
 use App\Models\UsersMap;
+
 use Laravel\Socialite\Facades\Socialite;
 
 final class DiscordController extends Controller
@@ -48,7 +50,7 @@ final class DiscordController extends Controller
             ]
         );
 
-        session()->put('user_id', $user->id);
+        Cookie::queue(Cookie::forever('user_id', $user->id));
 
         return redirect()->route('map.show', ['uuid' => $sessionData['map_uuid']]);
     }

@@ -11,7 +11,7 @@ use Illuminate\View\View;
 
 use App\Models\DiscordUser;
 use App\Models\Map;
-
+use Illuminate\Support\Facades\Cookie;
 use Throwable;
 
 /**
@@ -25,10 +25,10 @@ class MapsController extends Controller
     public function show(string $uuid) : ? View
     {
         try {
-            $map = Map::with(['discordUsers', 'activities'])->where('uuid', $uuid)->firstOrFail();
+            $map = Map::with(['discordUsers', 'activities.user'])->where('uuid', $uuid)->firstOrFail();
             $user = DiscordUser::with(['maps' => fn (BelongsToMany $query) : BelongsToMany => $query->wherePivot('map_id', $map->id)])
                 ->whereHas('maps', fn (Builder $query) : Builder => $query->where('id', $map->id))
-                ->find(session()->get('user_id'));
+                ->find(Cookie::get('user_id'));
 
             session()->put('map_uuid', $uuid);
 

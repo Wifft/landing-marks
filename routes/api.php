@@ -1,10 +1,8 @@
 <?php
-
-use App\Http\Controllers\Api\DiscordController;
-use App\Http\Controllers\Api\MapController;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\Api\MapsController;
+use App\Http\Controllers\Api\UserActivitiesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +19,17 @@ Route::prefix('v1')->group(
     static function () : void {
         Route::prefix('maps')->group(
             static function () : void {
-                Route::put('storeUserMark', [MapController::class, 'storeUserMark'])->name('api.maps.storeUserMark');
-                Route::put('deleteUserMark', [MapController::class, 'deleteUserMark'])->name('api.maps.deleteUserMark');
+                Route::put('storeUserMark', [MapsController::class, 'storeUserMark'])
+                    ->name('api.maps.storeUserMark');
+                Route::put('deleteUserMark', [MapsController::class, 'deleteUserMark'])
+                    ->name('api.maps.deleteUserMark');
+            }
+        );
+
+        Route::prefix('user-activities')->group(
+            static function () : void {
+                Route::post('store', [UserActivitiesController::class, 'store'])
+                    ->name('api.userActivities.store');
             }
         );
     }

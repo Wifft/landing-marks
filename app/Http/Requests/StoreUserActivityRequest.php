@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteUserMarkRequest extends FormRequest
+class StoreUserActivityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class DeleteUserMarkRequest extends FormRequest
     public function rules() : array
     {
         return [
-            'map_id' => 'numeric|required',
-            'discord_user_id' => 'numeric|required'
+            'message' => 'string|required|max:512',
+            'discord_user_id' => 'numeric|required',
+            'map_id' => 'numeric|required'
         ];
     }
 }

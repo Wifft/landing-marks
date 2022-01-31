@@ -11,9 +11,9 @@ class StoreUserMarkRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize() : bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,8 @@ class StoreUserMarkRequest extends FormRequest
     {
         return [
             'map_id' => 'numeric|required',
-            'user_id' => 'numeric|required'
+            'discord_user_id' => 'numeric|required',
+            'marker_data' => 'string|required'
         ];
     }
 }

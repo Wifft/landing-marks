@@ -1,3 +1,5 @@
+import makeRequest from "./ajax-helper";
+
 const L = window.L;
 
 const center = [15, -37];
@@ -28,6 +30,7 @@ for (const userData of mapUsersData) {
 
     if (markerData !== null) {
         markerData.ownerNickname = userData.nickname;
+        markerData.ownerId = userData.id;
         markers.push(markerData);
     }
 }
@@ -41,6 +44,15 @@ const drawnItems = markers.length > 0 ? L.geoJson(
             switch(marker.type) {
                 case 'Point':
                     layer.setIcon(redIcon);
+
+                    break;
+                case 'Polygon':
+                    layer.setStyle(
+                        {
+                            color: 'red'
+                        }
+                    );
+
                     break;
             }
         }
@@ -49,11 +61,13 @@ const drawnItems = markers.length > 0 ? L.geoJson(
 
 map.addLayer(drawnItems);
 
+const userMapData = user.maps[0].pivot;
+
 const drawControl = new L.Control.Draw(
     {
         position: 'topright',
         draw: {
-            polygon: user !== null && user.maps[0].pivot.marker_data === null ? {
+            polygon: user !== null && userMapData.marker_data === null ? {
                 shapeOptions: {
                     color: 'red'
                 },
@@ -66,7 +80,7 @@ const drawControl = new L.Control.Draw(
                 metric: false,
                 repeatMode: true
             } : false,
-            marker: user !== null && user.maps[0].pivot.marker_data === null ? {
+            marker: user !== null && userMapData.marker_data === null ? {
                 icon: redIcon
             } : false,
             polyline: false,
@@ -75,14 +89,14 @@ const drawControl = new L.Control.Draw(
             circlemarker: false
         },
         edit: {
-            edit: false, //ToDo: Hacer que solo el ADMINISTRADOR del server de turno pueda editar.
+            edit: false,
+            remove: (user !== null && userMapData.marker_data !== null) || userMapData.marker_data,
             featureGroup: drawnItems
         }
     }
 );
 
-//ToDo: Add hasRole check at some point.
-if (user !== null && Object.keys(user).length > 0 && user.maps[0].pivot.has_role) map.addControl(drawControl);
+if (user !== null && Object.keys(user).length > 0 && (userMapData.has_role || userMapData.is_admin)) map.addControl(drawControl);
 
 map.on(
     L.Draw.Event.CREATED,
@@ -92,24 +106,74 @@ map.on(
 
         drawnItems.addLayer(layer);
 
-        const rawLayer = JSON.stringify(layer.toGeoJSON().geometry);
+        const gsonLayer = layer.toGeoJSON().geometry;
+        const rawLayer = JSON.stringify(gsonLayer);
 
-        fetch(
-            saveMarkUri,
-            {
-                'method': 'PUT',
-                'mode': 'same-origin',
-                'cache': 'no-cache',
-                'credentials': 'same-origin',
-                'headers': {
-                    'Content-Type': 'application/json'
-                },
-                'redirect': 'follow',
-                'referrerPolicy': 'no-referrer',
-                'body': {
-                    'map_id': map
+        let requestData = {
+            '_method': 'PUT',
+            'map_id': mapId,
+            'discord_user_id': user.id,
+            'marker_data': rawLayer
+        };
+
+        makeRequest('POST', saveMarkUri, requestData).then(
+            _ => {
+                requestData = {
+                    'map_id': mapId,
+                    'discord_user_id': user.id,
+                    'message': `put his spot.`
+                };
+
+                makeRequest('POST', storeUserActivityUri, requestData)
+                    .then(_ => window.location.reload());
+            }
+        );
+
+    }
+);
+
+map.on(
+    L.Draw.Event.DELETED,
+    e => {
+        const requestData = {
+            '_method': 'PUT',
+            'map_id': mapId,
+            'discord_user_id': null,
+            'message': `removed his spot.`
+        };
+
+        if (userMapData.is_admin) {
+            e.layers.eachLayer(
+                layer => {
+                    requestData.discord_user_id = parseInt(layer.feature.geometry.ownerId),
+
+                    makeRequest('POST', deleteMarkUri, requestData).then(
+                        _ => {
+                            delete requestData._method;
+
+                            if (requestData.discord_user_id !== user.id) {
+                                requestData.message = `removed the spot of ${layer.feature.geometry.ownerNickname}`;
+                            }
+
+                            makeRequest('POST', storeUserActivityUri, requestData);
+                        }
+                    );
                 }
+            );
+
+            setTimeout(() => window.location.reload(), 2 * 1000)
+
+            return;
+        }
+
+        requestData.discord_user_id = user.id;
+        makeRequest('POST', deleteMarkUri, requestData).then(
+            _ => {
+                delete requestData._method;
+
+                makeRequest('POST', storeUserActivityUri, requestData)
+                    .then(_ => window.location.reload());
             }
         );
     }
-);
+)

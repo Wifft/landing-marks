@@ -10,4 +10,5 @@ class UsersMap extends Model
     use HasFactory;
 
     public $table = 'discord_users_maps';
+    public $timestamps = false;
 }

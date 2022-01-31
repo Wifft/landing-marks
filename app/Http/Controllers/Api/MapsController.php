@@ -16,7 +16,7 @@ use App\Models\UsersMap;
 
 use Throwable;
 
-final class MapController extends Controller
+final class MapsController extends Controller
 {
     public function store(StoreMapRequest $request) : JsonResponse
     {
@@ -40,13 +40,13 @@ final class MapController extends Controller
 
             UsersMap::where(
                 [
-                    ['map_id' =>  $data['map_id']],
-                    ['user_id' =>  $data['user_id']]
+                    ['map_id',  $data['map_id']],
+                    ['discord_user_id',  $data['discord_user_id']]
                 ]
             )
                 ->update(
                     [
-                        'mark_data' => $data['mark_data']
+                        'marker_data' => $data['marker_data']
                     ]
                 );
 
@@ -65,13 +65,13 @@ final class MapController extends Controller
 
             UsersMap::where(
                 [
-                    ['map_id' =>  $data['map_id']],
-                    ['discord_user_id' =>  $data['user_id']]
+                    ['map_id', $data['map_id']],
+                    ['discord_user_id',  $data['discord_user_id']]
                 ]
             )
                 ->update(
                     [
-                        'mark_data' => null
+                        'marker_data' => null
                     ]
                 );
 
