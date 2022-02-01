@@ -3548,7 +3548,8 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
-var userMapData = user.maps[0].pivot;
+var userMapData = {};
+if (user !== null) userMapData = user.maps[0].pivot;
 var L = window.L;
 var center = [15, -37];
 var zoom = 4.4;
@@ -3585,6 +3586,7 @@ try {
     if (markerData !== null) {
       markerData.ownerNickname = userData.nickname;
       markerData.ownerId = userData.id;
+      markerData.createdAt = userData.pivot.created_at;
       markers.push(markerData);
     }
   }
@@ -3596,7 +3598,8 @@ try {
 
 var drawnItems = markers.length > 0 ? L.geoJson(markers, {
   "onEachFeature": function onEachFeature(marker, layer) {
-    var createdAt = new Date(userMapData.created_at).toLocaleTimeString();
+    console.log(marker);
+    var createdAt = new Date(marker.createdAt).toLocaleTimeString();
     layer.bindPopup("\n                    <center>\n                        <span style=\"color:red\">".concat(marker.ownerNickname, "</span>\n                        <br/>\n                        <b>").concat(createdAt, "</b>\n                    </center>\n                "));
 
     switch (marker.type) {
@@ -3639,7 +3642,7 @@ var drawControl = new L.Control.Draw({
   },
   edit: {
     edit: false,
-    remove: user !== null && userMapData.marker_data !== null || userMapData.marker_data,
+    remove: user !== null && userMapData.marker_data !== null || userMapData.is_admin,
     featureGroup: drawnItems
   }
 });

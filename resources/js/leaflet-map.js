@@ -1,6 +1,7 @@
 import makeRequest from "./ajax-helper";
 
-const userMapData = user.maps[0].pivot;
+let userMapData = {};
+if (user !== null) userMapData = user.maps[0].pivot;
 
 const L = window.L;
 
@@ -40,6 +41,7 @@ for (const userData of mapUsersData) {
     if (markerData !== null) {
         markerData.ownerNickname = userData.nickname;
         markerData.ownerId = userData.id;
+        markerData.createdAt = userData.pivot.created_at;
         markers.push(markerData);
     }
 }
@@ -48,7 +50,8 @@ const drawnItems = markers.length > 0 ? L.geoJson(
     markers,
     {
         "onEachFeature": (marker, layer) => {
-            const createdAt = new Date(userMapData.created_at).toLocaleTimeString();
+            console.log(marker);
+            const createdAt = new Date(marker.createdAt).toLocaleTimeString();
 
             layer.bindPopup(
                 `
@@ -107,7 +110,7 @@ const drawControl = new L.Control.Draw(
         },
         edit: {
             edit: false,
-            remove: (user !== null && userMapData.marker_data !== null) || userMapData.marker_data,
+            remove: (user !== null && userMapData.marker_data !== null) || userMapData.is_admin,
             featureGroup: drawnItems
         }
     }

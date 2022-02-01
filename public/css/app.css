@@ -488,26 +488,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-8{
   height: 2rem;
 }
-.h-\[535px\]{
-  height: 535px;
+.h-\[785px\]{
+  height: 785px;
 }
 .h-20{
   height: 5rem;
-}
-.h-\[875px\]{
-  height: 875px;
-}
-.h-\[855px\]{
-  height: 855px;
-}
-.h-\[835px\]{
-  height: 835px;
-}
-.h-\[805px\]{
-  height: 805px;
-}
-.h-\[785px\]{
-  height: 785px;
 }
 .min-h-screen{
   min-height: 100vh;
@@ -582,17 +567,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .list-disc{
   list-style-type: disc;
 }
-.grid-cols-\[30\%_70\%\]{
-  grid-template-columns: 30% 70%;
+.grid-cols-\[20\%_80\%\]{
+  grid-template-columns: 20% 80%;
 }
 .grid-cols-1{
   grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-.grid-cols-\[28\%_72\%\]{
-  grid-template-columns: 28% 72%;
-}
-.grid-cols-\[20\%_80\%\]{
-  grid-template-columns: 20% 80%;
 }
 .flex-col{
   flex-direction: column;
@@ -611,9 +590,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .justify-items-center{
   justify-items: center;
-}
-.gap-4{
-  gap: 1rem;
 }
 .space-x-8 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
@@ -791,10 +767,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
-.text-lg{
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
@@ -803,13 +775,9 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-size: 1rem;
   line-height: 1.5rem;
 }
-.text-xl{
-  font-size: 1.25rem;
+.text-lg{
+  font-size: 1.125rem;
   line-height: 1.75rem;
-}
-.text-2xl{
-  font-size: 1.5rem;
-  line-height: 2rem;
 }
 .text-4xl{
   font-size: 2.25rem;
@@ -1119,34 +1087,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   }
 }
 @media (min-width: 640px){
-  .sm\:container{
-    width: 100%;
-  }
-  @media (min-width: 640px){
-    .sm\:container{
-      max-width: 640px;
-    }
-  }
-  @media (min-width: 768px){
-    .sm\:container{
-      max-width: 768px;
-    }
-  }
-  @media (min-width: 1024px){
-    .sm\:container{
-      max-width: 1024px;
-    }
-  }
-  @media (min-width: 1280px){
-    .sm\:container{
-      max-width: 1280px;
-    }
-  }
-  @media (min-width: 1536px){
-    .sm\:container{
-      max-width: 1536px;
-    }
-  }
   .sm\:-my-px{
     margin-top: -1px;
     margin-bottom: -1px;
