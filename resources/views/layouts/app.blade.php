@@ -9,11 +9,7 @@
         @include('partials.site.styles')
     </head>
     <body class="bg-gray-900">
-        <header class="text-center">
-            <h1 class="text-white text-lg">{{ $map->title }}</h1>
-        </header>
-
-        <main class="sm:container grid grid-cols-[30%_70%] mx-auto gap-4 justify-items-center">
+        <main class="grid grid-cols-[20%_80%] mx-auto justify-items-center">
             @yield('content')
         </main>
 

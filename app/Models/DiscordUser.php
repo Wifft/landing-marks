@@ -35,6 +35,13 @@ class DiscordUser extends Model
      */
     public function maps() : BelongsToMany
     {
-        return $this->belongsToMany(Map::class, (new UsersMap)->table)->withPivot(['marker_data', 'has_role', 'is_admin']);
+        $pivotFields = [
+            'marker_data',
+            'has_role',
+            'is_admin',
+            'created_at'
+        ];
+
+        return $this->belongsToMany(Map::class, (new UsersMap)->table)->withPivot($pivotFields);
     }
 }

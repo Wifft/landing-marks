@@ -1,13 +1,22 @@
 import makeRequest from "./ajax-helper";
 
+const userMapData = user.maps[0].pivot;
+
 const L = window.L;
 
 const center = [15, -37];
-const zoom = 4;
-const map = L.map('map', {'minZoom': zoom}).setView(center, zoom);
+const zoom = 4.4;
+const map = L.map(
+    'map',
+    {
+        'minZoom': zoom,
+        'zoomSnap': 0.1,
+    }
+)
+    .setView(center, zoom);
 
 const imageUrl = "https://media.fortniteapi.io/images/map.png";
-const imageBounds = [[-15, 0], [40.774, -70.125]];
+const imageBounds = [[-14.5, -1.5], [40.774, -70.125]];
 
 const redIcon = new L.Icon(
     {
@@ -39,7 +48,17 @@ const drawnItems = markers.length > 0 ? L.geoJson(
     markers,
     {
         "onEachFeature": (marker, layer) => {
-            layer.bindPopup(marker.ownerNickname);
+            const createdAt = new Date(userMapData.created_at).toLocaleTimeString();
+
+            layer.bindPopup(
+                `
+                    <center>
+                        <span style="color:red">${marker.ownerNickname}</span>
+                        <br/>
+                        <b>${createdAt}</b>
+                    </center>
+                `
+            );
 
             switch(marker.type) {
                 case 'Point':
@@ -60,8 +79,6 @@ const drawnItems = markers.length > 0 ? L.geoJson(
 ) : new L.FeatureGroup();
 
 map.addLayer(drawnItems);
-
-const userMapData = user.maps[0].pivot;
 
 const drawControl = new L.Control.Draw(
     {

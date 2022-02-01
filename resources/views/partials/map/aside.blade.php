@@ -1,6 +1,8 @@
 <aside class="w-full">
     <section class="h-full bg-zinc-800">
-        <div class="h-[535px] overflow-auto">
+        <h1 class="text-white text-4xl text-center p4 font-bold py-4">{{ $map->title }}</h1>
+        <hr/>
+        <div class="h-[785px] overflow-auto">
             @forelse($map->activities as $activity)
                 <p class="text-white py-2 px-4">
                     <b>{{ \Carbon\Carbon::parse($activity->created_at)->format('H:i:s') }}</b>

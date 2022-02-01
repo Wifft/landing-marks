@@ -1,6 +1,6 @@
 #map {
-    height: 646px;
-    background-color:rgb(0, 36, 141);
+    height: 100vh;
+    background-color: rgb(0, 36, 141);
 }
 
 /*
@@ -494,6 +494,21 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-20{
   height: 5rem;
 }
+.h-\[875px\]{
+  height: 875px;
+}
+.h-\[855px\]{
+  height: 855px;
+}
+.h-\[835px\]{
+  height: 835px;
+}
+.h-\[805px\]{
+  height: 805px;
+}
+.h-\[785px\]{
+  height: 785px;
+}
 .min-h-screen{
   min-height: 100vh;
 }
@@ -572,6 +587,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .grid-cols-1{
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-\[28\%_72\%\]{
+  grid-template-columns: 28% 72%;
+}
+.grid-cols-\[20\%_80\%\]{
+  grid-template-columns: 20% 80%;
 }
 .flex-col{
   flex-direction: column;
@@ -782,11 +803,26 @@ Ensure the default browser behavior of the `hidden` attribute.
   font-size: 1rem;
   line-height: 1.5rem;
 }
+.text-xl{
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.text-2xl{
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-4xl{
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
 .font-medium{
   font-weight: 500;
 }
 .font-semibold{
   font-weight: 600;
+}
+.font-bold{
+  font-weight: 700;
 }
 .uppercase{
   text-transform: uppercase;

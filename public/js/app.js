@@ -3548,14 +3548,16 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 
+var userMapData = user.maps[0].pivot;
 var L = window.L;
 var center = [15, -37];
-var zoom = 4;
+var zoom = 4.4;
 var map = L.map('map', {
-  'minZoom': zoom
+  'minZoom': zoom,
+  'zoomSnap': 0.1
 }).setView(center, zoom);
 var imageUrl = "https://media.fortniteapi.io/images/map.png";
-var imageBounds = [[-15, 0], [40.774, -70.125]];
+var imageBounds = [[-14.5, -1.5], [40.774, -70.125]];
 var redIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -3594,7 +3596,8 @@ try {
 
 var drawnItems = markers.length > 0 ? L.geoJson(markers, {
   "onEachFeature": function onEachFeature(marker, layer) {
-    layer.bindPopup(marker.ownerNickname);
+    var createdAt = new Date(userMapData.created_at).toLocaleTimeString();
+    layer.bindPopup("\n                    <center>\n                        <span style=\"color:red\">".concat(marker.ownerNickname, "</span>\n                        <br/>\n                        <b>").concat(createdAt, "</b>\n                    </center>\n                "));
 
     switch (marker.type) {
       case 'Point':
@@ -3610,7 +3613,6 @@ var drawnItems = markers.length > 0 ? L.geoJson(markers, {
   }
 }) : new L.FeatureGroup();
 map.addLayer(drawnItems);
-var userMapData = user.maps[0].pivot;
 var drawControl = new L.Control.Draw({
   position: 'topright',
   draw: {
