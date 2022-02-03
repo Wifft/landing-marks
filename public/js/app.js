@@ -3600,7 +3600,7 @@ var drawnItems = markers.length > 0 ? L.geoJson(markers, {
   "onEachFeature": function onEachFeature(marker, layer) {
     console.log(marker);
     var createdAt = new Date(marker.createdAt).toLocaleTimeString();
-    layer.bindPopup("\n                    <center>\n                        <span style=\"color:red\">".concat(marker.ownerNickname, "</span>\n                        <br/>\n                        <b>").concat(createdAt, "</b>\n                    </center>\n                "));
+    layer.bindPopup("\n                    <center>\n                        ".concat(marker.ownerNickname, "\n                        <br/>\n                        <b>").concat(createdAt, "</b>\n                    </center>\n                "));
 
     switch (marker.type) {
       case 'Point':

@@ -56,7 +56,7 @@ const drawnItems = markers.length > 0 ? L.geoJson(
             layer.bindPopup(
                 `
                     <center>
-                        <span style="color:red">${marker.ownerNickname}</span>
+                        ${marker.ownerNickname}
                         <br/>
                         <b>${createdAt}</b>
                     </center>

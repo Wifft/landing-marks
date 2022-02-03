@@ -19,6 +19,10 @@ Route::prefix('v1')->group(
     static function () : void {
         Route::prefix('maps')->group(
             static function () : void {
+                Route::get('guild-id/{guildId}', [MapsController::class, 'getUuidByGuildId'])
+                    ->name('api.maps.getUuidByGuildId');
+                Route::post('store', [MapsController::class, 'store'])
+                    ->name('api.maps.store');
                 Route::put('storeUserMark', [MapsController::class, 'storeUserMark'])
                     ->name('api.maps.storeUserMark');
                 Route::put('deleteUserMark', [MapsController::class, 'deleteUserMark'])

@@ -7,6 +7,8 @@ use Illuminate\Routing\Controller;
 
 use Illuminate\Support\Facades\Cookie;
 
+use App\Http\Clients\DiscordClient;
+
 use App\Models\DiscordUser;
 use App\Models\Map;
 use App\Models\UsersMap;
@@ -29,7 +31,7 @@ final class DiscordController extends Controller
         $userData = $discordSocialiteInstance->user();
         $mapData = Map::with(['discordUsers'])->where('uuid', $sessionData['map_uuid'])->first();
 
-        //$discordClient = new DiscordClient($userData->token);
+        $discordClient = new DiscordClient($userData->token);
 
         $user = DiscordUser::updateOrCreate(
             ['discord_id' => $userData->id],
@@ -46,7 +48,7 @@ final class DiscordController extends Controller
                 'discord_user_id' => $user->id
             ],
             [
-                //'has_role' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->role_id)
+                'has_role' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->role_id)
             ]
         );
 

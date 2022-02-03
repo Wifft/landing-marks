@@ -1,12 +1,13 @@
 <aside class="w-full">
     <section class="h-full bg-zinc-800">
         <h1 class="text-white text-4xl text-center p4 font-bold py-4">{{ $map->title }}</h1>
+        <span class="block text-white text-2xl text-center pb-2">Total: {{ $map->discordUsers()->whereNotNull('marker_data')->count() }} markers.</span>
         <hr/>
         <div class="h-[785px] overflow-auto">
             @forelse($map->activities as $activity)
                 <p class="text-white py-2 px-4">
                     <b>{{ \Carbon\Carbon::parse($activity->created_at)->format('H:i:s') }}</b>
-                    <span class="text-yellow-300">{{ $activity->user->nickname }}</span>
+                    <span class="text-yellow-300">{{ $activity->user?->nickname }}</span>
                     {{ $activity->message }}
                 </p>
             @empty

@@ -45,7 +45,11 @@ final class DiscordClient
      */
     public function hasServerRole(int $guildId, int $userId, int $roleId) : bool
     {
-        $response = $this->makeRequest("guilds/$guildId/members/$userId", HttpMethods::GET);
+        $response = $this->makeRequest("users/@me/guilds/$guildId/member", HttpMethods::GET);
+
+        if (!isset($response->roles)) {
+            throw new Exception('Unauthorized', 403);
+        }
 
         return !is_null($response) && in_array($roleId, $response->roles);
     }
