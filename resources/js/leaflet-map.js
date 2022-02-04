@@ -158,20 +158,20 @@ map.on(
         const requestData = {
             '_method': 'PUT',
             'map_id': mapId,
-            'discord_user_id': null,
+            'discord_user_id': user.id,
             'message': `removed his spot.`
         };
 
         if (userMapData.is_admin) {
             e.layers.eachLayer(
                 layer => {
-                    requestData.discord_user_id = parseInt(layer.feature.geometry.ownerId),
+                    const ownerId = layer.feature.geometry.ownerId;
 
                     makeRequest('POST', deleteMarkUri, requestData).then(
                         _ => {
                             delete requestData._method;
 
-                            if (requestData.discord_user_id !== user.id) {
+                            if (ownerId !== user.id) {
                                 requestData.message = `removed the spot of ${layer.feature.geometry.ownerNickname}`;
                             }
 
@@ -186,7 +186,6 @@ map.on(
             return;
         }
 
-        requestData.discord_user_id = user.id;
         makeRequest('POST', deleteMarkUri, requestData).then(
             _ => {
                 delete requestData._method;

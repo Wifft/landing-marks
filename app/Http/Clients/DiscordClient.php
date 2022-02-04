@@ -47,8 +47,8 @@ final class DiscordClient
     {
         $response = $this->makeRequest("users/@me/guilds/$guildId/member", HttpMethods::GET);
 
-        if (!isset($response->roles)) {
-            throw new Exception('Unauthorized', 403);
+        if (!is_null($response) && !isset($response->roles)) {
+            return false;
         }
 
         return !is_null($response) && in_array($roleId, $response->roles);

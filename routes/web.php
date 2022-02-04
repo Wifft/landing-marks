@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\DiscordController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MapsController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,7 @@ use Laravel\Socialite\Facades\Socialite;
 |
 */
 
-Route::get('/', fn () : View => view('welcome'));
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('map/{uuid}', [MapsController::class, 'show'])->name('map.show');
 

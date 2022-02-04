@@ -3674,16 +3674,17 @@ map.on(L.Draw.Event.DELETED, function (e) {
   var requestData = {
     '_method': 'PUT',
     'map_id': mapId,
-    'discord_user_id': null,
+    'discord_user_id': user.id,
     'message': "removed his spot."
   };
 
   if (userMapData.is_admin) {
     e.layers.eachLayer(function (layer) {
-      requestData.discord_user_id = parseInt(layer.feature.geometry.ownerId), (0,_ajax_helper__WEBPACK_IMPORTED_MODULE_0__["default"])('POST', deleteMarkUri, requestData).then(function (_) {
+      var ownerId = layer.feature.geometry.ownerId;
+      (0,_ajax_helper__WEBPACK_IMPORTED_MODULE_0__["default"])('POST', deleteMarkUri, requestData).then(function (_) {
         delete requestData._method;
 
-        if (requestData.discord_user_id !== user.id) {
+        if (ownerId !== user.id) {
           requestData.message = "removed the spot of ".concat(layer.feature.geometry.ownerNickname);
         }
 
@@ -3696,7 +3697,6 @@ map.on(L.Draw.Event.DELETED, function (e) {
     return;
   }
 
-  requestData.discord_user_id = user.id;
   (0,_ajax_helper__WEBPACK_IMPORTED_MODULE_0__["default"])('POST', deleteMarkUri, requestData).then(function (_) {
     delete requestData._method;
     (0,_ajax_helper__WEBPACK_IMPORTED_MODULE_0__["default"])('POST', storeUserActivityUri, requestData).then(function (_) {

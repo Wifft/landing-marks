@@ -20,7 +20,8 @@ class Map extends Model
         'title',
         'uuid',
         'guild_id',
-        'role_id'
+        'role_id',
+        'admin_role_id'
     ];
 
     /**
@@ -28,7 +29,8 @@ class Map extends Model
      */
     protected $casts = [
         'guild_id' => 'int',
-        'role_id' => 'int'
+        'role_id' => 'int',
+        'admin_role_id' => 'int'
     ];
 
     /**

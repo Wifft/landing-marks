@@ -48,7 +48,8 @@ final class DiscordController extends Controller
                 'discord_user_id' => $user->id
             ],
             [
-                'has_role' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->role_id)
+                'has_role' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->role_id),
+                'is_admin' => $discordClient->hasServerRole($mapData->guild_id, $userData->id, $mapData->admin_role_id)
             ]
         );
 
