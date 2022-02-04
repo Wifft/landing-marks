@@ -21,7 +21,6 @@ class StoreMapRequest extends FormRequest
     {
         return [
             'title' => 'string|required|max:255',
-            'uuid' => 'string|required|max:255|unique:maps',
             'guild_id' => 'string|required|max:255',
             'role_id' => 'string|required|max:255',
             'admin_role_id' => 'string|required|max:255'

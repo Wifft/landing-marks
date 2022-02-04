@@ -10,6 +10,9 @@ class UsersMap extends Model
     use HasFactory;
 
     public $table = 'discord_users_maps';
+    public $incrementing = false;
+
+    protected $primaryKey = null;
 
     protected $fillable = [
         'discord_user_id',
