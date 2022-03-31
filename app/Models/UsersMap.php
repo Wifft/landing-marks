@@ -11,7 +11,7 @@ class UsersMap extends Model
 
     public $table = 'discord_users_maps';
     public $incrementing = false;
-
+    
     protected $primaryKey = null;
 
     protected $fillable = [

@@ -3681,6 +3681,7 @@ map.on(L.Draw.Event.DELETED, function (e) {
   if (userMapData.is_admin) {
     e.layers.eachLayer(function (layer) {
       var ownerId = layer.feature.geometry.ownerId;
+      requestData.discord_user_id = ownerId;
       (0,_ajax_helper__WEBPACK_IMPORTED_MODULE_0__["default"])('POST', deleteMarkUri, requestData).then(function (_) {
         delete requestData._method;
 

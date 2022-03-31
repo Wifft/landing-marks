@@ -24,7 +24,7 @@
                 </a>
             @else
                 <img class="h-20 m-auto rounded-full"
-                    src="{{ $user->avatar}}"
+                    src="{{ !is_null($user->avatar) ? $user->avatar : asset('img/discord_logo.jpg') }}"
                     alt="{{ $user->nickname }}"
                     name="{{ $user->nickname }}"/>
                 <p class="text-white">Welcome, {{ $user->nickname }}!</p>

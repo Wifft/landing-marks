@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @php($user = null)
+@php($map = null)
 
 @section('page')
     <header class="text-center my-4">

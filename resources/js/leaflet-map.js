@@ -166,6 +166,7 @@ map.on(
             e.layers.eachLayer(
                 layer => {
                     const ownerId = layer.feature.geometry.ownerId;
+                    requestData.discord_user_id = ownerId;
 
                     makeRequest('POST', deleteMarkUri, requestData).then(
                         _ => {
