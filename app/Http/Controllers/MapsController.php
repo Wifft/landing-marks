@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 
 use Illuminate\View\View;
@@ -14,8 +15,6 @@ use App\Http\Clients\DiscordClient;
 use App\Models\DiscordUser;
 use App\Models\Map;
 use App\Models\UsersMap;
-
-use Illuminate\Support\Facades\Cookie;
 
 use Throwable;
 
